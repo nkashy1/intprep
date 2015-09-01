@@ -12,14 +12,25 @@ class SinglyLinkedNode(object):
 
 
 class SinglyLinkedList(object):
-    def __init__(self, head):
+    def __init__(self, head=None):
         self.head = head
 
     def append(self, node):
-        current = self.head
-        while current.child is not None:
-            current = current.child
-        current.child = node
+        if self.head is None:
+            self.head = node
+        else:
+            current = self.head
+            while current.child is not None:
+                current = current.child
+            current.child = node
+
+    def prepend(self, node):
+        if self.head is None:
+            self.head = node
+        else:
+            tail_head = self.head
+            self.head = node
+            self.append(tail_head)
 
     def traverse(self):
         current = self.head
@@ -54,7 +65,7 @@ class SinglyLinkedNodeTest(unittest.TestCase):
         self.assertIs(self.child.child, self.grandchild)
 
 
-class SinglyLinkedListTest(unittest.TestCase):
+class SinglyLinkedListTests(unittest.TestCase):
     def setUp(self):
         self.head = SinglyLinkedNode(0)
         self.linked_list = SinglyLinkedList(self.head)
@@ -86,3 +97,37 @@ class SinglyLinkedListTest(unittest.TestCase):
         for i in range(100):
             self.linked_list.append(SinglyLinkedNode(i))
         self.assertEqual(self.linked_list.traverse(), [0] + range(100))
+
+    def test_prepend(self):
+        new_head = SinglyLinkedNode(-1)
+        new_head_child = SinglyLinkedNode(-2)
+        new_head.link(new_head_child)
+
+        self.linked_list.prepend(new_head)
+
+        self.assertIs(self.linked_list.head, new_head)
+        self.assertIs(self.linked_list.head.child, new_head_child)
+        self.assertIs(self.linked_list.head.child.child, self.head)
+        self.assertIsNone(self.linked_list.head.child.child.child)
+
+
+class EmptySinglyLinkedListTests(unittest.TestCase):
+    def setUp(self):
+        self.linked_list = SinglyLinkedList()
+
+    def test_constructor(self):
+        self.assertIsNone(self.linked_list.head)
+
+    def test_append(self):
+        node = SinglyLinkedNode(0)
+        self.linked_list.append(node)
+        self.assertIs(self.linked_list.head, node)
+
+    def test_prepend(self):
+        node = SinglyLinkedNode(0)
+        self.linked_list.prepend(node)
+        self.assertIs(self.linked_list.head, node)
+
+    def test_traverse(self):
+        traversal = self.linked_list.traverse()
+        self.assertEqual(traversal, [])
