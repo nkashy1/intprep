@@ -76,6 +76,10 @@ class loop_lengthTest(TestBase):
         l = self.create_list(100,0)
         self.assertEqual(loop_length(l), 0)
 
+    def test_4(self):
+        l = self.create_list(15, 1)
+        self.assertEqual(loop_length(l), 1)
+
 
 class entry_pointTest(TestBase):
     def test_1(self):
@@ -89,3 +93,7 @@ class entry_pointTest(TestBase):
     def test_3(self):
         l = self.create_list(100, 0)
         self.assertIsNone(entry_point(l))
+
+    def test_4(self):
+        l = self.create_list(15, 1)
+        self.assertEqual(entry_point(l).value, 16)
