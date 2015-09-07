@@ -15,6 +15,13 @@ class MathGraph(object):
             self.neighbors[e[0]].append(e[1])
 
 
+class BinaryTreeVertex(object):
+    def __init__(self, value=None, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+
 # TESTS
 import unittest
 
