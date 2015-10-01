@@ -20,12 +20,20 @@ def gt(a, b):
         return 1
 
 class BinaryHeap(object):
-    def __init__(self, values=(), priority = lt):
+    def __init__(self, values=[], priority = lt):
         self.value_list = [value for value in values]
         self.priority = priority
 
     def __len__(self):
         return len(self.value_list)
+
+    def pop(self):
+        if len(self) == 0:
+            return None
+
+        result = self.value_list[0]
+        self.delete(0)
+        return result
 
     def insert(self, value):
         self.value_list.append(value)
@@ -146,3 +154,13 @@ class BinaryHeapTests(unittest.TestCase):
         heap = BinaryHeap((1, 2, 3, 4, 5, 6, 7, 8))
         heap.delete(2)
         self.assertEqual(heap.value_list, [1, 2, 6, 4, 5, 8, 7])
+
+    def test_pop_1(self):
+        heap = BinaryHeap((1,))
+        self.assertEqual(heap.pop(), 1)
+        self.assertEqual(heap.value_list, [])
+
+    def test_pop_2(self):
+        heap = BinaryHeap((1, 2, 3, 4, 5, 6))
+        self.assertEqual(heap.pop(), 1)
+        self.assertEqual(heap.value_list, [2, 4, 3, 6, 5])
